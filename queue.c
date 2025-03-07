@@ -51,17 +51,28 @@ bool q_insert_head(struct list_head *head, char *s)
     }
 
     // Insert s at the head of queue
-    newq->list.next = head;
-    newq->list.prev = head->prev;
-    head->prev->next = &newq->list;
-    head->prev = &newq->list;
-    // head = &newq->list;
+    list_add(&newq->list, head);
     return true;
 }
 
 /* Insert an element at tail of queue */
 bool q_insert_tail(struct list_head *head, char *s)
 {
+    // Create a new queue
+    element_t *newq = malloc(sizeof(element_t));
+    if (!newq) {
+        return false;
+    }
+
+    // Duplicate s in global memory and storage in new queue
+    newq->value = strdup(s);
+    if (!newq->value) {
+        free(newq);
+        return false;
+    }
+
+    // Insert s at the tail of queue
+    list_add_tail(&newq->list, head);
     return true;
 }
 

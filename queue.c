@@ -251,8 +251,37 @@ void q_reverseK(struct list_head *head, int k)
     }
 }
 
+void bubble_sort(struct list_head *head, bool descend)
+{
+    for (struct list_head *times = head->next; times != head;
+         times = times->next) {
+        struct list_head *curr = head->next;
+        struct list_head *next = curr->next;
+        for (; next != head; curr = curr->next, next = curr->next) {
+            element_t *elem_c = list_entry(curr, element_t, list);
+            element_t *elem_n = list_entry(next, element_t, list);
+            if (*elem_c->value > *elem_n->value) {
+                char *tmp = elem_c->value;
+                elem_c->value = elem_n->value;
+                elem_n->value = tmp;
+            }
+        }
+    }
+    if (descend == 1)
+        q_reverse(head);
+}
+
 /* Sort elements of queue in ascending/descending order */
-void q_sort(struct list_head *head, bool descend) {}
+void q_sort(struct list_head *head, bool descend)
+{
+    if (!head || list_empty(head) || list_is_singular(head))
+        return;
+
+    // Bubble Sort
+    bubble_sort(head, descend);
+    // Quick Sort
+
+}
 
 /* Remove every node which has a node with a strictly less value anywhere to
  * the right side of it */

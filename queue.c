@@ -31,6 +31,25 @@ void q_free(struct list_head *head)
 /* Insert an element at head of queue */
 bool q_insert_head(struct list_head *head, char *s)
 {
+    // Create a new queue in global memory
+    element_t *newq = malloc(sizeof(element_t));
+    if (!newq) {
+        return false;
+    }
+
+    // Duplicate a global memory to storage s
+    newq->value = strdup(s);
+    if (!newq->value) {
+        free(newq);
+        return false;
+    }
+
+    // Insert s at the head of queue
+    newq->list.next = head;
+    newq->list.prev = head->prev;
+    head->prev->next = &newq->list;
+    head->prev = &newq->list;
+    // head = &newq->list;
     return true;
 }
 

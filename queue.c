@@ -22,10 +22,12 @@ void q_free(struct list_head *head)
     struct list_head *curr = head->next;
     while (curr != head) {
         struct list_head *tmp = curr->next;
-        free(curr);
+        element_t *elem = list_entry(curr, element_t, list);
+        free(elem->value);
+        free(elem);
         curr = tmp;
     }
-    free(curr);
+    free(head);
 }
 
 /* Insert an element at head of queue */
